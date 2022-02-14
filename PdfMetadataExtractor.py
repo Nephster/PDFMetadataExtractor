@@ -2,6 +2,7 @@ from PyPDF2 import PdfFileReader
 import glob
 import sys
 from os.path import exists
+import argparse
 
 def get_info(path):
     try:
@@ -12,6 +13,7 @@ def get_info(path):
         dictionary_items = info.items()
         for item in dictionary_items:
             print("{}: {} ".format(item[0],item[1]))
+            
     except IOError:
         print("Couldnt open a file")
     
@@ -27,7 +29,13 @@ def findOutPDF(fileName):
     except IOError:
         print("Couldnt open a file")  
 
-def main(folder):
+def main():
+    parser = argparse.ArgumentParser(description="Pdf metdata extractor")
+    parser.add_argument("-f", "--folder", help="Folder to enumerate pdf files")
+
+    args = parser.parse_args()
+    folder = args.folder
+    
     if not exists(folder):
         print("Path doesnt exist")
         return 0
@@ -38,4 +46,4 @@ def main(folder):
             get_info(path)
             print("\n\n")
 if __name__ == '__main__':
-    main(sys.argv[1])
+    main()
